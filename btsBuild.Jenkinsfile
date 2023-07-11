@@ -86,7 +86,7 @@ pipeline {
   }
 
   // Trigger the pipeline when code is pushed to the main branch
-  triggers {
-    scm('*/5 * * * *') // Poll SCM every 5 minutes
-  }
+//   triggers {
+//     scm('*/5 * * * *') // Poll SCM every 5 minutes
+//   }
 }
