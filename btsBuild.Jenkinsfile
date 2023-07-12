@@ -8,58 +8,59 @@ pipeline {
       }
     }
 
-    stage('Build and Test') {
-      steps {
-        // Set up Flutter environment (adjust paths as needed)
-        sh 'export PATH=$PATH:/home/ubuntu/snap/flutter/common/flutter/bin'
-        sh 'flutter doctor'
-
-        // Build Flutter project
-        sh 'export PROJECT=$PROJECT:/home/ubuntu/Bus-Tracking-System-Pipeline'
-        sh 'flutter build apk'
-
-        // Run tests
-        sh 'flutter test'
-      }
-    }
-
-    // stage('Publish to Nexus') {
+    // stage('Build and Test') {
     //   steps {
-    //     // Publish artifacts to Nexus
-    //     nexusArtifactUploader(
-    //       nexusVersion: 'nexus3',
-    //       protocol: 'http',
-    //       nexusUrl: 'http://nexus_server_url',
-    //       groupId: 'com.example',
-    //       version: '1.0.0',
-    //       repository: 'your_repository_name',
-    //       file: 'build/app/outputs/flutter-apk/app-release.apk',
-    //       credentialsId: 'nexus_credentials'
-    //     )
+    //     // Set up Flutter environment (adjust paths as needed)
+    //     sh 'export PATH=$PATH:/home/ubuntu/snap/flutter/common/flutter/bin'
+    //     sh 'flutter doctor'
+
+    //     // Build Flutter project
+    //      dir('Bus-Tracking-system/src/bus_tracking_system/') {
+    //       sh 'flutter build apk'
+    //     }
+
+    //     // Run tests
+    //     sh 'flutter test'
     //   }
     // }
 
-    stage('Deploy to Staging') {
+    stage('Publish to Nexus') {
       steps {
-        // Deploy to staging environment
-        sh 'flutter deploy staging'
+        // Publish artifacts to Nexus
+        nexusArtifactUploader(
+          nexusVersion: 'nexus3',
+          protocol: 'http',
+          nexusUrl: 'http://localhost:8081/repository/Bus-Tracking-Application/',
+          groupId: 'com.example',
+          version: '1.0.0',
+          repository: 'Bus-Tracking-Application',
+          // file: 'Bus-Tracking-system/src/bus_tracking_system/build/app/outputs/flutter-apk/app-release.apk',
+          credentialsId: 'nexus-credentials'
+        )
       }
     }
 
-    stage('Deploy to Production') {
-      steps {
-        // Deploy to production environment
-        sh 'flutter deploy production'
-      }
-    }
+  //   stage('Deploy to Staging') {
+  //     steps {
+  //       // Deploy to staging environment
+  //       sh 'flutter deploy staging'
+  //     }
+  //   }
 
-    stage('Post-Deployment Test') {
-      steps {
-        // Run post-deployment tests
-        sh 'flutter test_integration'
-      }
-    }
-  }
+  //   stage('Deploy to Production') {
+  //     steps {
+  //       // Deploy to production environment
+  //       sh 'flutter deploy production'
+  //     }
+  //   }
+
+  //   stage('Post-Deployment Test') {
+  //     steps {
+  //       // Run post-deployment tests
+  //       sh 'flutter test_integration'
+  //     }
+  //   }
+  // }
 
   post {
     always {
@@ -79,15 +80,16 @@ pipeline {
     failure {
       // Send email notification on failure
       emailext (
-        to: 'prathamkandari123@gmail.com',
+        to: 'prathamkandari123@#gmail.com',
         subject: 'Build Failed: Bus Tracking System',
         body: 'The Bus Tracking System build and deployment failed. Please check the Jenkins logs for details.'
       )
     }
   }
 
-  // Trigger the pipeline when code is pushed to the main branch
+//   // Trigger the pipeline when code is pushed to the main branch
 //   triggers {
-//     scm('*/5 * * * *') // Poll SCM every 5 minutes
-//   }
+//     scm('*/5 * * * *') // Poll SCM every 5 minutes
+//   }
+}
 }
