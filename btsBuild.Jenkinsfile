@@ -15,6 +15,7 @@ pipeline {
         sh 'flutter doctor'
 
         // Build Flutter project
+        sh 'export PROJECT=$PROJECT:/home/ubuntu/Bus-Tracking-System-Pipeline'
         sh 'flutter build apk'
 
         // Run tests
