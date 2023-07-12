@@ -34,7 +34,7 @@ pipeline {
           groupId: 'com.example',
           version: '1.0.0',
           repository: 'Bus-Tracking-Application',
-          // file: 'Bus-Tracking-system/src/bus_tracking_system/build/app/outputs/flutter-apk/app-release.apk',
+          file: 'Bus-Tracking-system/src/bus_tracking_system/build/app/outputs/flutter-apk/app-release.apk',
           credentialsId: 'nexus-credentials'
         )
       }
